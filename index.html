@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GLIDER WAR</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Vazirmatn:wght@400;600;800&display=swap');
+
+:root{
+ --bg:#f8f2e8;
+ --box:#fffaf2;
+ --text:#21170e;
+ --muted:#746452;
+ --gold:#d98212;
+ --yellow:#ffbd3c;
+ --line:#ead5b5;
+}
+
+body.dark{
+ --bg:#0d0b09;
+ --box:#18130e;
+ --text:#fff5df;
+ --muted:#c6b394;
+ --gold:#ffae25;
+ --yellow:#ffd36a;
+ --line:#3e2d19;
+}
+
+*{
+ box-sizing:border-box;
+}
+
+html{
+ scroll-behavior:smooth;
+}
+
+body{
+ margin:0;
+ background:
+ radial-gradient(circle at 50% -10%,#f5a62325,transparent 38%),
+ var(--bg);
+ color:var(--text);
+ font-family:'Vazirmatn',Tahoma,sans-serif;
+ transition:.3s;
+}
+
+button,a{
+ font:inherit;
+}
+
+/* دکمه‌های بالای صفحه */
+
+.top{
+ position:fixed;
+ top:13px;
+ left:13px;
+ right:13px;
+ z-index:5;
+ display:flex;
+ justify-content:space-between;
+}
+
+.icon{
+ width:37px;
+ height:37px;
+ border-radius:11px;
+ border:1px solid var(--line);
+ background:var(--box);
+ color:var(--text);
+ font-size:18px;
+ cursor:pointer;
+ box-shadow:0 6px 22px #0002;
+}
+
+/* هدر */
+
+.hero{
+ height:330px;
+ display:grid;
+ place-items:center;
+ text-align:center;
+
+ background:
+ radial-gradient(circle at 50% 45%,#ffbd3c44,transparent 25%),
+ repeating-linear-gradient(
+   135deg,
+   transparent 0 28px,
+   #d9821210 29px 30px
+ ),
+ linear-gradient(135deg,#2a1808,#b85f0b 50%,#21140a);
+
+ border-radius:0 0 30px 30px;
+ box-shadow:0 15px 45px #0003;
+}
+
+.hero-inner{
+ direction:ltr;
+}
+
+.hero-mark{
+ font-size:clamp(3.5rem,13vw,8rem);
+ font-weight:800;
+ letter-spacing:.08em;
+ color:#ffe0a0;
+ text-shadow:0 5px 25px #0008;
+ font-family:Cinzel,serif;
+}
+
+.hero-small{
+ font-family:Cinzel,serif;
+ color:#ffb52f;
+ letter-spacing:.35em;
+ font-size:.8rem;
+}
+
+/* عنوان */
+
+.title{
+ text-align:center;
+ padding:38px 15px 20px;
+}
+
+.title h1{
+ margin:0;
+ color:var(--yellow);
+ font:800 clamp(3rem,10vw,6.5rem) Cinzel,serif;
+ direction:ltr;
+ letter-spacing:.1em;
+}
+
+.title p{
+ color:var(--muted);
+ direction:ltr;
+ letter-spacing:.25em;
+}
+
+/* محتوای اصلی */
+
+.wrap{
+ width:min(900px,calc(100% - 30px));
+ margin:auto;
+}
+
+.card{
+ background:var(--box);
+ border:1px solid var(--line);
+ border-radius:22px;
+ padding:28px;
+ box-shadow:0 15px 45px #6b430d22;
+ margin:20px 0 28px;
+}
+
+.card p{
+ line-height:2.15;
+ margin:0 0 18px;
+}
+
+.quote{
+ border-right:4px solid var(--gold);
+ padding:15px 18px;
+ color:var(--yellow);
+ font-weight:800;
+ line-height:2;
+}
+
+/* دکمه ورود */
+
+.cta{
+ text-align:center;
+ margin:28px 0 50px;
+}
+
+.cta a{
+ display:inline-block;
+ padding:13px 24px;
+ border-radius:13px;
+ text-decoration:none;
+ background:linear-gradient(135deg,var(--gold),var(--yellow));
+ color:#211307;
+ font-weight:800;
+}
+
+/* عنوان بخش‌ها */
+
+h2{
+ font:800 1.5rem Cinzel,serif;
+ color:var(--yellow);
+ text-align:center;
+ direction:ltr;
+}
+
+/* امتیازدهی */
+
+.stars{
+ display:flex;
+ justify-content:center;
+ gap:7px;
+ direction:ltr;
+}
+
+.star{
+ width:44px;
+ height:44px;
+ border-radius:11px;
+ border:1px solid var(--line);
+ background:transparent;
+ color:var(--muted);
+ font-size:23px;
+ cursor:pointer;
+}
+
+.star.active,
+.star:hover{
+ background:var(--gold);
+ color:#211307;
+ border-color:var(--gold);
+}
+
+.note{
+ text-align:center;
+ color:var(--muted);
+ min-height:28px;
+ margin-top:12px;
+}
+
+/* مدیریت */
+
+.admin{
+ text-align:center;
+}
+
+.admin code{
+ color:var(--yellow);
+ direction:ltr;
+}
+
+/* فوتر */
+
+footer{
+ text-align:center;
+ color:var(--muted);
+ padding:10px 15px 45px;
+ font-size:.85rem;
+}
+
+/* منوی سه خط */
+
+.drawer{
+ position:fixed;
+ inset:0;
+ background:#0007;
+ z-index:10;
+ opacity:0;
+ pointer-events:none;
+ transition:.25s;
+}
+
+.drawer.open{
+ opacity:1;
+ pointer-events:auto;
+}
+
+.menu{
+ position:absolute;
+ right:0;
+ top:0;
+ height:100%;
+ width:min(320px,86vw);
+ background:var(--box);
+ padding:75px 22px;
+ transform:translateX(100%);
+ transition:.3s;
+}
+
+.drawer.open .menu{
+ transform:translateX(0);
+}
+
+.menu h2{
+ text-align:left;
+}
+
+.menu a{
+ display:block;
+ padding:15px 8px;
+ border-bottom:1px solid var(--line);
+ text-decoration:none;
+ color:var(--text);
+}
+
+.menu a:hover{
+ color:var(--yellow);
+}
+
+/* موبایل */
+
+@media(max-width:600px){
+
+ .hero{
+  height:270px;
+ }
+
+ .card{
+  padding:21px 17px;
+ }
+
+ .card p{
+  font-size:.94rem;
+ }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- دکمه‌های بالا -->
+
+<div class="top">
+
+ <button class="icon" id="theme">
+  ☾
+ </button>
+
+ <button class="icon" id="open">
+  ☰
+ </button>
+
+</div>
+
+
+<!-- هدر -->
+
+<header class="hero">
+
+ <div class="hero-inner">
+
+  <div class="hero-mark">
+   GLIDER
+  </div>
+
+  <div class="hero-small">
+   WAR • UNIVERSE • STORIES
+  </div>
+
+ </div>
+
+</header>
+
+
+<!-- عنوان -->
+
+<section class="title">
+
+ <h1>
+  GLIDER WAR
+ </h1>
+
+ <p>
+  INTERACTIVE MULTI-SEASON UNIVERSE
+ </p>
+
+</section>
+
+
+<main class="wrap">
+
+
+<!-- توضیحات -->
+
+<section class="card" id="home">
+
+<p>
+GLIDER WAR یک مجموعه بازی و سناریوی تعاملی چندفصلی است که هر فصل داستان، فضای روایی، قوانین و سبک مخصوص خودش را دارد. بازیکنان در هر فصل وارد یک دنیای متفاوت می‌شوند و در قالب شخصیت‌ها یا گروه‌های مختلف، درگیر اتفاقات و تصمیم‌هایی می‌شوند که می‌تواند مسیر داستان را تغییر دهد.
+</p>
+
+<p>
+ساختار GLIDER WAR به یک سبک خاص محدود نیست. هر فصل می‌تواند ژانر متفاوتی داشته باشد، از بقا، جنگ و ماجراجویی گرفته تا معمایی، جنایی و ترسناک. به همین دلیل هر فصل تجربه‌ای مستقل دارد، اما همه آن‌ها بخشی از مجموعه بزرگ GLIDER WAR هستند.
+</p>
+
+<p>
+یکی از بخش‌های مهم بازی، تأثیر تصمیمات بازیکنان است. همکاری، رقابت، انتخاب‌های شخصی و اتفاقات پیش‌بینی‌نشده می‌توانند باعث تغییر شرایط و حتی مسیر کلی داستان شوند. بنابراین نتیجه اتفاقات همیشه از قبل مشخص نیست و عملکرد بازیکنان نقش مهمی در ادامه فصل دارد.
+</p>
+
+<p>
+در کنار داستان اصلی، هر فصل می‌تواند شخصیت‌ها، گروه‌ها، مکان‌ها، سیستم‌های اختصاصی و قوانین متفاوت خودش را داشته باشد. همین موضوع باعث می‌شود GLIDER WAR بیشتر از یک بازی ثابت باشد و هر فصل مانند یک سناریوی جدید با قوانین و هویت مخصوص خودش شکل بگیرد.
+</p>
+
+<div class="quote">
+GLIDER WAR، مجموعه‌ای از فصل‌های متفاوت؛ هر فصل یک داستان، یک جهان و یک تجربه جدید.
+</div>
+
+</section>
+
+
+<!-- دکمه ورود -->
+
+<div class="cta">
+
+<a href="https://t.me/GLIDER_WAR" target="_blank">
+ ENTER GLIDER WAR ↗
+</a>
+
+</div>
+
+
+<!-- امتیازدهی -->
+
+<section class="card" id="rating">
+
+<h2>
+RATE THE SITE
+</h2>
+
+<p style="text-align:center">
+نظرت درباره سایت را از ۱ تا ۵ ثبت کن.
+</p>
+
+<div class="stars">
+
+<button class="star" data-n="1">
+★
+</button>
+
+<button class="star" data-n="2">
+★
+</button>
+
+<button class="star" data-n="3">
+★
+</button>
+
+<button class="star" data-n="4">
+★
+</button>
+
+<button class="star" data-n="5">
+★
+</button>
+
+</div>
+
+<div class="note" id="note">
+هنوز امتیازی ثبت نشده.
+</div>
+
+</section>
+
+
+<!-- مدیریت -->
+
+<section class="card admin" id="management">
+
+<h2>
+MANAGEMENT
+</h2>
+
+<p>
+بخش مدیریت در نسخه‌های بعدی تکمیل می‌شود.
+</p>
+
+<p>
+آیدی برای پرسش و پاسخ بازی:
+</p>
+
+<code>
+@AAja___1292
+</code>
+
+</section>
+
+
+</main>
+
+
+<footer>
+© GLIDER WAR • All seasons, one universe.
+</footer>
+
+
+<!-- منوی سه خط -->
+
+<div class="drawer" id="drawer">
+
+<nav class="menu">
+
+<h2>
+MENU
+</h2>
+
+<a href="#home">
+خانه
+</a>
+
+<a href="#management">
+مدیریت
+</a>
+
+<a href="#rating">
+نظر دهی
+</a>
+
+</nav>
+
+</div>
+
+
+<script>
+
+/* حالت روشن و تاریک */
+
+const body = document.body;
+const theme = document.getElementById('theme');
+
+if(localStorage.getItem('gw-theme') === 'dark'){
+ body.classList.add('dark');
+}
+
+function updateIcon(){
+
+ theme.textContent =
+ body.classList.contains('dark')
+ ? '☀'
+ : '☾';
+
+}
+
+updateIcon();
+
+theme.onclick = () => {
+
+ body.classList.toggle('dark');
+
+ localStorage.setItem(
+  'gw-theme',
+  body.classList.contains('dark')
+  ? 'dark'
+  : 'light'
+ );
+
+ updateIcon();
+
+};
+
+
+/* منو */
+
+const drawer = document.getElementById('drawer');
+
+document.getElementById('open').onclick = () => {
+ drawer.classList.add('open');
+};
+
+drawer.onclick = e => {
+
+ if(e.target === drawer){
+  drawer.classList.remove('open');
+ }
+
+};
+
+document.querySelectorAll('.menu a').forEach(a => {
+
+ a.onclick = () => {
+  drawer.classList.remove('open');
+ };
+
+});
+
+
+/* سیستم امتیازدهی */
+
+const stars = [
+ ...document.querySelectorAll('.star')
+];
+
+const note = document.getElementById('note');
+
+let saved =
+ Number(localStorage.getItem('gw-rating') || 0);
+
+
+function paint(n){
+
+ stars.forEach(star => {
+
+  star.classList.toggle(
+   'active',
+   Number(star.dataset.n) <= n
+  );
+
+ });
+
+}
+
+
+if(saved){
+
+ paint(saved);
+
+ note.textContent =
+  'امتیاز ثبت‌شده: ' + saved + ' از ۵';
+
+}
+
+
+stars.forEach(star => {
+
+ star.onclick = () => {
+
+  saved = Number(star.dataset.n);
+
+  localStorage.setItem(
+   'gw-rating',
+   saved
+  );
+
+  paint(saved);
+
+  note.textContent =
+   'امتیاز ثبت شد: ' + saved + ' از ۵';
+
+ };
+
+});
+
+</script>
+
+</body>
+</html>
