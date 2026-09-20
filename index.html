@@ -1,628 +1,573 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GLIDER WAR</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Vazirmatn:wght@400;600;800&display=swap');
-
 :root{
- --bg:#f8f2e8;
- --box:#fffaf2;
- --text:#21170e;
- --muted:#746452;
- --gold:#d98212;
- --yellow:#ffbd3c;
- --line:#ead5b5;
+  --bg:#fff8ec;
+  --surface:#ffffff;
+  --text:#171717;
+  --muted:#666;
+  --accent:#ff9d00;
+  --accent2:#ff6a00;
+  --border:#ffd28a;
 }
 
-body.dark{
- --bg:#0d0b09;
- --box:#18130e;
- --text:#fff5df;
- --muted:#c6b394;
- --gold:#ffae25;
- --yellow:#ffd36a;
- --line:#3e2d19;
+.dark{
+  --bg:#11100e;
+  --surface:#1c1916;
+  --text:#fff;
+  --muted:#bdb7ae;
+  --accent:#ffb52f;
+  --accent2:#ff7200;
+  --border:#4d3216;
 }
 
 *{
- box-sizing:border-box;
-}
-
-html{
- scroll-behavior:smooth;
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
 body{
- margin:0;
- background:
- radial-gradient(circle at 50% -10%,#f5a62325,transparent 38%),
- var(--bg);
- color:var(--text);
- font-family:'Vazirmatn',Tahoma,sans-serif;
- transition:.3s;
+  font-family:Tahoma,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  transition:.3s;
+  min-height:100vh;
 }
 
-button,a{
- font:inherit;
+button{
+  font-family:inherit;
 }
 
-/* دکمه‌های بالای صفحه */
-
-.top{
- position:fixed;
- top:13px;
- left:13px;
- right:13px;
- z-index:5;
- display:flex;
- justify-content:space-between;
+/* دکمه‌های بالا */
+.top-btn{
+  position:fixed;
+  top:15px;
+  z-index:20;
+  width:44px;
+  height:44px;
+  border:none;
+  border-radius:50%;
+  background:var(--surface);
+  color:var(--text);
+  box-shadow:0 5px 20px #0002;
+  cursor:pointer;
+  font-size:21px;
 }
 
-.icon{
- width:37px;
- height:37px;
- border-radius:11px;
- border:1px solid var(--line);
- background:var(--box);
- color:var(--text);
- font-size:18px;
- cursor:pointer;
- box-shadow:0 6px 22px #0002;
+.theme-btn{
+  left:15px;
 }
 
-/* هدر */
+.menu-btn{
+  right:15px;
+}
 
+/* HERO */
 .hero{
- height:330px;
- display:grid;
- place-items:center;
- text-align:center;
-
- background:
- radial-gradient(circle at 50% 45%,#ffbd3c44,transparent 25%),
- repeating-linear-gradient(
-   135deg,
-   transparent 0 28px,
-   #d9821210 29px 30px
- ),
- linear-gradient(135deg,#2a1808,#b85f0b 50%,#21140a);
-
- border-radius:0 0 30px 30px;
- box-shadow:0 15px 45px #0003;
+  position:relative;
+  overflow:hidden;
+  padding:75px 20px 45px;
+  text-align:center;
+  background:
+    radial-gradient(circle at 50% 20%,#ffb52f55,transparent 35%),
+    linear-gradient(135deg,var(--accent2),var(--accent));
+  color:white;
 }
 
-.hero-inner{
- direction:ltr;
+/* مکعب تزئینی */
+.cube-wrap{
+  position:absolute;
+  right:22px;
+  top:22px;
+  width:74px;
+  height:74px;
+  perspective:500px;
+  pointer-events:none;
+  z-index:2;
+  opacity:.9;
 }
 
-.hero-mark{
- font-size:clamp(3.5rem,13vw,8rem);
- font-weight:800;
- letter-spacing:.08em;
- color:#ffe0a0;
- text-shadow:0 5px 25px #0008;
- font-family:Cinzel,serif;
+.cube{
+  width:58px;
+  height:58px;
+  position:absolute;
+  left:8px;
+  top:8px;
+  transform-style:preserve-3d;
+  transform:rotateX(-18deg) rotateY(28deg);
 }
 
-.hero-small{
- font-family:Cinzel,serif;
- color:#ffb52f;
- letter-spacing:.35em;
- font-size:.8rem;
+.cube-face{
+  position:absolute;
+  width:58px;
+  height:58px;
+  border:2px solid #ffb52f;
+  background:linear-gradient(135deg,#ffb52f22,#ff7a0018);
+  box-shadow:0 0 16px #ff9d0030 inset;
+}
+
+.cube-front{
+  transform:translateZ(29px);
+}
+
+.cube-back{
+  transform:rotateY(180deg) translateZ(29px);
+}
+
+.cube-right{
+  transform:rotateY(90deg) translateZ(29px);
+}
+
+.cube-left{
+  transform:rotateY(-90deg) translateZ(29px);
+}
+
+.cube-top{
+  transform:rotateX(90deg) translateZ(29px);
+}
+
+.cube-bottom{
+  transform:rotateX(-90deg) translateZ(29px);
 }
 
 /* عنوان */
-
-.title{
- text-align:center;
- padding:38px 15px 20px;
+.hero h1{
+  font-size:clamp(42px,9vw,90px);
+  font-weight:1000;
+  letter-spacing:4px;
+  text-shadow:0 5px 0 #0003;
 }
 
-.title h1{
- margin:0;
- color:var(--yellow);
- font:800 clamp(3rem,10vw,6.5rem) Cinzel,serif;
- direction:ltr;
- letter-spacing:.1em;
-}
-
-.title p{
- color:var(--muted);
- direction:ltr;
- letter-spacing:.25em;
+.hero p{
+  margin-top:10px;
+  font-size:16px;
 }
 
 /* محتوای اصلی */
-
-.wrap{
- width:min(900px,calc(100% - 30px));
- margin:auto;
+.container{
+  width:min(900px,92%);
+  margin:30px auto;
 }
 
 .card{
- background:var(--box);
- border:1px solid var(--line);
- border-radius:22px;
- padding:28px;
- box-shadow:0 15px 45px #6b430d22;
- margin:20px 0 28px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:25px;
+  margin-bottom:22px;
+  box-shadow:0 10px 35px #0001;
 }
 
-.card p{
- line-height:2.15;
- margin:0 0 18px;
+.card h2{
+  color:var(--accent2);
+  margin-bottom:15px;
 }
 
-.quote{
- border-right:4px solid var(--gold);
- padding:15px 18px;
- color:var(--yellow);
- font-weight:800;
- line-height:2;
+.description{
+  line-height:2.1;
+  color:var(--text);
 }
 
-/* دکمه ورود */
-
+/* دکمه روبیکا */
 .cta{
- text-align:center;
- margin:28px 0 50px;
+  display:inline-block;
+  margin-top:20px;
+  padding:13px 24px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+  box-shadow:0 6px 20px #ff850044;
 }
 
-.cta a{
- display:inline-block;
- padding:13px 24px;
- border-radius:13px;
- text-decoration:none;
- background:linear-gradient(135deg,var(--gold),var(--yellow));
- color:#211307;
- font-weight:800;
+/* امتیاز */
+.rating{
+  text-align:center;
 }
-
-/* عنوان بخش‌ها */
-
-h2{
- font:800 1.5rem Cinzel,serif;
- color:var(--yellow);
- text-align:center;
- direction:ltr;
-}
-
-/* امتیازدهی */
 
 .stars{
- display:flex;
- justify-content:center;
- gap:7px;
- direction:ltr;
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  direction:ltr;
+  margin-top:15px;
 }
 
 .star{
- width:44px;
- height:44px;
- border-radius:11px;
- border:1px solid var(--line);
- background:transparent;
- color:var(--muted);
- font-size:23px;
- cursor:pointer;
+  border:none;
+  background:none;
+  color:#aaa;
+  font-size:35px;
+  cursor:pointer;
 }
 
-.star.active,
-.star:hover{
- background:var(--gold);
- color:#211307;
- border-color:var(--gold);
+.star.active{
+  color:#ff9d00;
 }
 
-.note{
- text-align:center;
- color:var(--muted);
- min-height:28px;
- margin-top:12px;
-}
-
-/* مدیریت */
-
-.admin{
- text-align:center;
-}
-
-.admin code{
- color:var(--yellow);
- direction:ltr;
-}
-
-/* فوتر */
-
-footer{
- text-align:center;
- color:var(--muted);
- padding:10px 15px 45px;
- font-size:.85rem;
-}
-
-/* منوی سه خط */
-
+/* منو */
 .drawer{
- position:fixed;
- inset:0;
- background:#0007;
- z-index:10;
- opacity:0;
- pointer-events:none;
- transition:.25s;
+  position:fixed;
+  top:0;
+  right:-310px;
+  width:290px;
+  height:100vh;
+  background:var(--surface);
+  z-index:30;
+  padding:80px 25px 25px;
+  box-shadow:-10px 0 35px #0003;
+  transition:.3s;
 }
 
 .drawer.open{
- opacity:1;
- pointer-events:auto;
+  right:0;
 }
 
-.menu{
- position:absolute;
- right:0;
- top:0;
- height:100%;
- width:min(320px,86vw);
- background:var(--box);
- padding:75px 22px;
- transform:translateX(100%);
- transition:.3s;
+.drawer h2{
+  color:var(--accent2);
+  margin-bottom:25px;
 }
 
-.drawer.open .menu{
- transform:translateX(0);
+.drawer a{
+  display:block;
+  padding:15px;
+  margin-bottom:8px;
+  color:var(--text);
+  text-decoration:none;
+  border-radius:12px;
 }
 
-.menu h2{
- text-align:left;
+.drawer a:hover{
+  background:var(--bg);
 }
 
-.menu a{
- display:block;
- padding:15px 8px;
- border-bottom:1px solid var(--line);
- text-decoration:none;
- color:var(--text);
-}
-
-.menu a:hover{
- color:var(--yellow);
+.close-menu{
+  position:absolute;
+  top:15px;
+  left:15px;
+  border:none;
+  background:none;
+  color:var(--text);
+  font-size:25px;
+  cursor:pointer;
 }
 
 /* موبایل */
-
 @media(max-width:600px){
+  .cube-wrap{
+    right:12px;
+    top:12px;
+    transform:scale(.78);
+    transform-origin:top right;
+  }
 
- .hero{
-  height:270px;
- }
+  .hero{
+    padding-top:80px;
+  }
 
- .card{
-  padding:21px 17px;
- }
-
- .card p{
-  font-size:.94rem;
- }
-
+  .card{
+    padding:20px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- دکمه‌های بالا -->
+<!-- دکمه حالت روشن/تاریک -->
+<button class="top-btn theme-btn" id="themeBtn">☾</button>
 
-<div class="top">
+<!-- دکمه منو -->
+<button class="top-btn menu-btn" id="menuBtn">☰</button>
 
- <button class="icon" id="theme">
-  ☾
- </button>
+<!-- منوی کناری -->
+<nav class="drawer" id="drawer">
 
- <button class="icon" id="open">
-  ☰
- </button>
+  <button class="close-menu" id="closeMenu">×</button>
 
-</div>
+  <h2>GLIDER WAR</h2>
+
+  <a href="#home">🏠 خانه</a>
+  <a href="#management">⚙️ مدیریت</a>
+  <a href="#rating">⭐ نظر دهی</a>
+
+</nav>
 
 
-<!-- هدر -->
+<!-- هدر سایت -->
+<header class="hero" id="home">
 
-<header class="hero">
-
- <div class="hero-inner">
-
-  <div class="hero-mark">
-   GLIDER
+  <!-- مکعب -->
+  <div class="cube-wrap" aria-hidden="true">
+    <div class="cube">
+      <div class="cube-face cube-front"></div>
+      <div class="cube-face cube-back"></div>
+      <div class="cube-face cube-right"></div>
+      <div class="cube-face cube-left"></div>
+      <div class="cube-face cube-top"></div>
+      <div class="cube-face cube-bottom"></div>
+    </div>
   </div>
 
-  <div class="hero-small">
-   WAR • UNIVERSE • STORIES
-  </div>
+  <h1>GLIDER WAR</h1>
 
- </div>
+  <p>
+    هر فصل، یک داستان. هر انتخاب، یک مسیر.
+  </p>
 
 </header>
 
 
-<!-- عنوان -->
+<main class="container">
 
-<section class="title">
+  <!-- درباره بازی -->
+  <section class="card">
 
- <h1>
-  GLIDER WAR
- </h1>
+    <h2>درباره GLIDER WAR</h2>
 
- <p>
-  INTERACTIVE MULTI-SEASON UNIVERSE
- </p>
+    <div class="description">
 
-</section>
+      GLIDER WAR یک مجموعه بازی و سناریوی تعاملی چندفصلی است که هر فصل داستان، فضای روایی، قوانین و سبک مخصوص خودش را دارد. بازیکنان در هر فصل وارد یک دنیای متفاوت می‌شوند و در قالب شخصیت‌ها یا گروه‌های مختلف، درگیر اتفاقات و تصمیم‌هایی می‌شوند که می‌تواند مسیر داستان را تغییر دهد.
 
+      <br><br>
 
-<main class="wrap">
+      ساختار GLIDER WAR به یک سبک خاص محدود نیست. هر فصل می‌تواند ژانر متفاوتی داشته باشد، از بقا، جنگ و ماجراجویی گرفته تا معمایی، جنایی و ترسناک. به همین دلیل هر فصل تجربه‌ای مستقل دارد، اما همه آن‌ها بخشی از مجموعه بزرگ GLIDER WAR هستند.
 
+      <br><br>
 
-<!-- توضیحات -->
+      یکی از بخش‌های مهم بازی، تأثیر تصمیمات بازیکنان است. همکاری، رقابت، انتخاب‌های شخصی و اتفاقات پیش‌بینی‌نشده می‌توانند باعث تغییر شرایط و حتی مسیر کلی داستان شوند. بنابراین نتیجه اتفاقات همیشه از قبل مشخص نیست و عملکرد بازیکنان نقش مهمی در ادامه فصل دارد.
 
-<section class="card" id="home">
+      <br><br>
 
-<p>
-GLIDER WAR یک مجموعه بازی و سناریوی تعاملی چندفصلی است که هر فصل داستان، فضای روایی، قوانین و سبک مخصوص خودش را دارد. بازیکنان در هر فصل وارد یک دنیای متفاوت می‌شوند و در قالب شخصیت‌ها یا گروه‌های مختلف، درگیر اتفاقات و تصمیم‌هایی می‌شوند که می‌تواند مسیر داستان را تغییر دهد.
-</p>
+      در کنار داستان اصلی، هر فصل می‌تواند شخصیت‌ها، گروه‌ها، مکان‌ها، سیستم‌های اختصاصی و قوانین متفاوت خودش را داشته باشد. همین موضوع باعث می‌شود GLIDER WAR بیشتر از یک بازی ثابت باشد و هر فصل مانند یک سناریوی جدید با قوانین و هویت مخصوص خودش شکل بگیرد.
 
-<p>
-ساختار GLIDER WAR به یک سبک خاص محدود نیست. هر فصل می‌تواند ژانر متفاوتی داشته باشد، از بقا، جنگ و ماجراجویی گرفته تا معمایی، جنایی و ترسناک. به همین دلیل هر فصل تجربه‌ای مستقل دارد، اما همه آن‌ها بخشی از مجموعه بزرگ GLIDER WAR هستند.
-</p>
+      <br><br>
 
-<p>
-یکی از بخش‌های مهم بازی، تأثیر تصمیمات بازیکنان است. همکاری، رقابت، انتخاب‌های شخصی و اتفاقات پیش‌بینی‌نشده می‌توانند باعث تغییر شرایط و حتی مسیر کلی داستان شوند. بنابراین نتیجه اتفاقات همیشه از قبل مشخص نیست و عملکرد بازیکنان نقش مهمی در ادامه فصل دارد.
-</p>
+      <b>
+        GLIDER WAR، مجموعه‌ای از فصل‌های متفاوت؛ هر فصل یک داستان، یک جهان و یک تجربه جدید.
+      </b>
 
-<p>
-در کنار داستان اصلی، هر فصل می‌تواند شخصیت‌ها، گروه‌ها، مکان‌ها، سیستم‌های اختصاصی و قوانین متفاوت خودش را داشته باشد. همین موضوع باعث می‌شود GLIDER WAR بیشتر از یک بازی ثابت باشد و هر فصل مانند یک سناریوی جدید با قوانین و هویت مخصوص خودش شکل بگیرد.
-</p>
+    </div>
 
-<div class="quote">
-GLIDER WAR، مجموعه‌ای از فصل‌های متفاوت؛ هر فصل یک داستان، یک جهان و یک تجربه جدید.
-</div>
+    <!-- لینک مستقیم روبیکا -->
+    <a
+      class="cta"
+      href="https://rubika.ir/GLIDER_WAR"
+      target="_blank"
+      rel="noopener"
+    >
+      ورود به @GLIDER_WAR در روبیکا
+    </a>
 
-</section>
-
-
-<!-- دکمه ورود -->
-
-<div class="cta">
-
-<a href="https://t.me/GLIDER_WAR" target="_blank">
- ENTER GLIDER WAR ↗
-</a>
-
-</div>
+  </section>
 
 
-<!-- امتیازدهی -->
+  <!-- نظر دهی -->
+  <section class="card rating" id="rating">
 
-<section class="card" id="rating">
+    <h2>نظر دهی</h2>
 
-<h2>
-RATE THE SITE
-</h2>
+    <p>
+      به GLIDER WAR امتیاز بده
+    </p>
 
-<p style="text-align:center">
-نظرت درباره سایت را از ۱ تا ۵ ثبت کن.
-</p>
+    <div class="stars">
 
-<div class="stars">
+      <button class="star" data-rating="1">★</button>
+      <button class="star" data-rating="2">★</button>
+      <button class="star" data-rating="3">★</button>
+      <button class="star" data-rating="4">★</button>
+      <button class="star" data-rating="5">★</button>
 
-<button class="star" data-n="1">
-★
-</button>
+    </div>
 
-<button class="star" data-n="2">
-★
-</button>
+    <p id="ratingText" style="margin-top:12px;"></p>
 
-<button class="star" data-n="3">
-★
-</button>
-
-<button class="star" data-n="4">
-★
-</button>
-
-<button class="star" data-n="5">
-★
-</button>
-
-</div>
-
-<div class="note" id="note">
-هنوز امتیازی ثبت نشده.
-</div>
-
-</section>
+  </section>
 
 
-<!-- مدیریت -->
+  <!-- مدیریت -->
+  <section class="card" id="management">
 
-<section class="card admin" id="management">
+    <h2>مدیریت</h2>
 
-<h2>
-MANAGEMENT
-</h2>
+    <p>
+      مدیریت و هماهنگی GLIDER WAR توسط تیم سازنده و مدیران مجموعه انجام می‌شود.
+    </p>
 
-<p>
-بخش مدیریت در نسخه‌های بعدی تکمیل می‌شود.
-</p>
+    <br>
 
-<p>
-آیدی برای پرسش و پاسخ بازی:
-</p>
+    <p>
+      Game Q&A:
+      <b>@AAja___1292</b>
+    </p>
 
-<code>
-@AAja___1292
-</code>
+    <!-- لینک Q&A روبیکا -->
+    <a
+      class="cta"
+      href="https://rubika.ir/AAja___1292"
+      target="_blank"
+      rel="noopener"
+    >
+      ارتباط با Q&A در روبیکا
+    </a>
 
-</section>
-
+  </section>
 
 </main>
 
 
-<footer>
-© GLIDER WAR • All seasons, one universe.
-</footer>
-
-
-<!-- منوی سه خط -->
-
-<div class="drawer" id="drawer">
-
-<nav class="menu">
-
-<h2>
-MENU
-</h2>
-
-<a href="#home">
-خانه
-</a>
-
-<a href="#management">
-مدیریت
-</a>
-
-<a href="#rating">
-نظر دهی
-</a>
-
-</nav>
-
-</div>
-
-
 <script>
 
-/* حالت روشن و تاریک */
+/* =========================
+   حالت روشن / تاریک
+========================= */
 
-const body = document.body;
-const theme = document.getElementById('theme');
+const themeBtn = document.getElementById("themeBtn");
 
-if(localStorage.getItem('gw-theme') === 'dark'){
- body.classList.add('dark');
-}
+function updateThemeIcon(){
 
-function updateIcon(){
-
- theme.textContent =
- body.classList.contains('dark')
- ? '☀'
- : '☾';
+  if(document.body.classList.contains("dark")){
+    themeBtn.textContent = "☀";
+  }else{
+    themeBtn.textContent = "☾";
+  }
 
 }
 
-updateIcon();
+try{
 
-theme.onclick = () => {
+  if(localStorage.getItem("glider-theme") === "dark"){
+    document.body.classList.add("dark");
+  }
 
- body.classList.toggle('dark');
+}catch(e){}
 
- localStorage.setItem(
-  'gw-theme',
-  body.classList.contains('dark')
-  ? 'dark'
-  : 'light'
- );
+updateThemeIcon();
 
- updateIcon();
+themeBtn.addEventListener("click",function(){
 
-};
+  document.body.classList.toggle("dark");
 
+  try{
 
-/* منو */
+    localStorage.setItem(
+      "glider-theme",
+      document.body.classList.contains("dark")
+        ? "dark"
+        : "light"
+    );
 
-const drawer = document.getElementById('drawer');
+  }catch(e){}
 
-document.getElementById('open').onclick = () => {
- drawer.classList.add('open');
-};
-
-drawer.onclick = e => {
-
- if(e.target === drawer){
-  drawer.classList.remove('open');
- }
-
-};
-
-document.querySelectorAll('.menu a').forEach(a => {
-
- a.onclick = () => {
-  drawer.classList.remove('open');
- };
+  updateThemeIcon();
 
 });
 
 
-/* سیستم امتیازدهی */
+/* =========================
+   منوی سه‌خط
+========================= */
 
-const stars = [
- ...document.querySelectorAll('.star')
-];
+const drawer = document.getElementById("drawer");
+const menuBtn = document.getElementById("menuBtn");
+const closeMenu = document.getElementById("closeMenu");
 
-const note = document.getElementById('note');
+menuBtn.addEventListener("click",function(){
 
-let saved =
- Number(localStorage.getItem('gw-rating') || 0);
+  drawer.classList.add("open");
+
+});
+
+closeMenu.addEventListener("click",function(){
+
+  drawer.classList.remove("open");
+
+});
+
+document.addEventListener("click",function(e){
+
+  if(
+    drawer.classList.contains("open") &&
+    !drawer.contains(e.target) &&
+    e.target !== menuBtn
+  ){
+
+    drawer.classList.remove("open");
+
+  }
+
+});
 
 
-function paint(n){
+/* =========================
+   امتیازدهی
+========================= */
 
- stars.forEach(star => {
+const stars = document.querySelectorAll(".star");
+const ratingText = document.getElementById("ratingText");
 
-  star.classList.toggle(
-   'active',
-   Number(star.dataset.n) <= n
-  );
+function setRating(value){
 
- });
+  stars.forEach(function(star){
+
+    const rating =
+      Number(star.dataset.rating);
+
+    star.classList.toggle(
+      "active",
+      rating <= value
+    );
+
+  });
+
+  ratingText.textContent =
+    "امتیاز شما: " + value + " از 5";
+
+  try{
+
+    localStorage.setItem(
+      "glider-rating",
+      value
+    );
+
+  }catch(e){}
 
 }
 
 
-if(saved){
+try{
 
- paint(saved);
+  const savedRating =
+    localStorage.getItem("glider-rating");
 
- note.textContent =
-  'امتیاز ثبت‌شده: ' + saved + ' از ۵';
+  if(savedRating){
 
-}
+    setRating(
+      Number(savedRating)
+    );
+
+  }
+
+}catch(e){}
 
 
-stars.forEach(star => {
+stars.forEach(function(star){
 
- star.onclick = () => {
+  star.addEventListener("click",function(){
 
-  saved = Number(star.dataset.n);
+    setRating(
+      Number(star.dataset.rating)
+    );
 
-  localStorage.setItem(
-   'gw-rating',
-   saved
-  );
-
-  paint(saved);
-
-  note.textContent =
-   'امتیاز ثبت شد: ' + saved + ' از ۵';
-
- };
+  });
 
 });
 
